@@ -1,6 +1,8 @@
 # LSUnusedResources
 A Mac App to find unused images and resources in an XCode project. It is heavily influenced by jeffhodnett‘s [Unused](http://jeffhodnett.github.io/Unused/), but Unused is very slow, and the results are not entirely correct. So I made some performance optimization, the search speed is more faster than Unused.
 
+**This fork added support of .xml file and fix storyboard searching bug in watch extension.**
+
 ## Example
 
 ![LSMessageHUD Example1](https://github.com/tinymind/LSUnusedResources/raw/master/LSUnusedResourcesExample.gif)  
