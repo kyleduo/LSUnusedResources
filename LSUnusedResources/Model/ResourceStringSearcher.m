@@ -185,7 +185,7 @@ typedef NS_ENUM(NSUInteger, LSFileType) {
             groupIndex = 1;
             break;
         case LSFileTypeXib:
-            pattern = @"image name=\"(.+?)\"";//image name="xx"
+            pattern = @"image( name)?=\"(.+?)\"";//image name="xx"
             groupIndex = 1;
             break;
         case LSFileTypeHtml:
@@ -220,7 +220,18 @@ typedef NS_ENUM(NSUInteger, LSFileType) {
     if (matchs.count) {
         NSMutableArray *list = [NSMutableArray array];
         for (NSTextCheckingResult *checkingResult in matchs) {
-            NSString *res = [content substringWithRange:[checkingResult rangeAtIndex:index]];
+			NSRange range = NSMakeRange(0, 0);
+			// support watch extension story board.
+			for (NSInteger i = index; i < checkingResult.numberOfRanges; i++) {
+				range = [checkingResult rangeAtIndex:i];
+				if (range.location != NSNotFound) {
+					break;
+				}
+			}
+			if (range.location == NSNotFound) {
+				continue;
+			}
+            NSString *res = [content substringWithRange:range];
             res = [res lastPathComponent];
             res = [StringUtils stringByRemoveResourceSuffix:res];
             [list addObject:res];
@@ -267,8 +278,11 @@ typedef NS_ENUM(NSUInteger, LSFileType) {
     }
     if ([ext isEqualTo:@"css"]) {
         return LSFileTypeCSS;
-    }
-    
+	}
+	if ([ext isEqualTo:@"xml"]) {
+		return LSFileTypeHtml;
+	}
+	
     return LSFileTypeNone;
 }
 
